@@ -7,3 +7,32 @@ choice - altAll
 :t - inspect type
 cabal repl - with deps
 ghci - repl without deps
+
+<$ - right to left map (but no function)
+$> - left to right map (but no function)
+<$> - right to left map
+<&> - left to right map
+=<< - right to left bind
+>>= - left to right bind
+<=< - right to left point free bind (kleisli composition)
+>=> - left to right point free bind
+<> - semigroup concat
+
+(:) - 
+
+(,) <$> Just 5 <*> Just 10
+Just (5,10)
+
+
+Prelude> ((+ 1) . (+ 100)) 5
+106
+
+Prelude> (+ 1) . (+ 100) $ 5
+106
+
+. - function composition
+
+f $ g $ h x  =  f (g (h x))
+f . g . h $ x  =  f (g (h x))
+
+$ - reduce parentheses

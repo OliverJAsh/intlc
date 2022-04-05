@@ -39,6 +39,7 @@ instance ShowErrorComponent MessageParseErr where
 
 failingWith :: MonadParsec e s m => Int -> e -> m a
 pos `failingWith` e = parseError . errFancy pos . fancy . ErrorCustom $ e
+-- failingWith pos = parseError . errFancy pos . fancy . ErrorCustom
 
 printErr :: ParseFailure -> String
 printErr FailedJsonParse        = "Failed to parse JSON"
@@ -97,6 +98,11 @@ token = choice
 
 plaintext :: Parser Text
 plaintext = T.singleton <$> L.charLiteral
+
+-- pipe(Option.of(f), Option.ap(a), Option.ap(b), Option.ap(c))
+-- pipe(a.map(f), Option.ap(b), , Option.ap(c))
+-- f <$> a <*> b <*> c
+-- (f <$> a) <*> b <*> c
 
 escaped :: Parser Text
 escaped = apos *> choice
@@ -167,6 +173,7 @@ boolCases = (,)
 
 selectCases :: Parser (NonEmpty SelectCase, Maybe SelectWildcard)
 selectCases = (,) <$> cases <*> optional wildcard
+  -- {type, select, foo {bar} baz {bob}}
   where cases = NE.sepEndBy1 (SelectCase <$> (name <* hspace1) <*> caseBody) hspace1
         wildcard = SelectWildcard <$> (string wildcardName *> hspace1 *> caseBody)
         name = try $ mfilter (/= wildcardName) ident
