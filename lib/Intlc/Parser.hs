@@ -65,6 +65,11 @@ initialState = ParserState mempty
 
 type Parser = ReaderT ParserState (Parsec MessageParseErr Text)
 
+-- some - 1 or more
+-- many - 0 or more
+
+-- ident = some letterChar <&> T.pack
+-- some(letterChar).map(T.pack)
 ident :: Parser Text
 ident = T.pack <$> some letterChar
 
@@ -74,6 +79,7 @@ msg = f . mergePlaintext <$> manyTill token eof
         f [Plaintext x] = Static x
         f (x:xs)        = Dynamic (x :| xs)
 
+-- choice = altAll in fp-ts
 token :: Parser Token
 token = choice
   [ Interpolation <$> (interp <|> callback)
@@ -85,6 +91,9 @@ token = choice
       Nothing -> empty
   , Plaintext <$> (try escaped <|> plaintext)
   ]
+
+-- Hello {name}
+-- {number, plural, one {# photo} other {# photos}}
 
 plaintext :: Parser Text
 plaintext = T.singleton <$> L.charLiteral

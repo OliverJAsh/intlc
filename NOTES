@@ -1,0 +1,9 @@
+$> - mapTo
+*> - chainTo
+<*> - ap in fp-ts ?
+<|> - alt
+choice - altAll
+:i - details
+:t - inspect type
+cabal repl - with deps
+ghci - repl without deps
