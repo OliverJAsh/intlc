@@ -1,10 +1,14 @@
 $> - mapTo
 *> - chainTo
+<* - ap but ignores
 <*> - ap in fp-ts ?
 <|> - alt
 choice - altAll
+
+REPL
 :i - details
 :t - inspect type
+
 cabal repl - with deps
 ghci - repl without deps
 
@@ -20,6 +24,7 @@ $> - left to right map (but no function)
 
 (:) - 
 
+tuple constructor
 (,) <$> Just 5 <*> Just 10
 Just (5,10)
 
@@ -36,3 +41,13 @@ f $ g $ h x  =  f (g (h x))
 f . g . h $ x  =  f (g (h x))
 
 $ - reduce parentheses
+function application, used to re-order without parentheses
+
+String is a type alias for [Char]
+
+
+prefix
+tnodeParser = (<|>) plaintextParser interpolationParser
+
+infix
+tnodeParser = plaintextParser <|> interpolationParser
